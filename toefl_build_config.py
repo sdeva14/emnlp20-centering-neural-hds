@@ -106,8 +106,3 @@ def get_config():
         parser.add_argument("--world_size", default=1, type=int)  # 
         config, _ = parser.parse_known_args()
         return config, _
-
-
-# xlnet-asap: 0.0005
-# emnlp18-asap: 0.01
-# gru-asap: 0.001

@@ -7,20 +7,11 @@ from utils import str2bool
 def process_config():
         # Argument
         data_arg = add_argument_group('Data')
-        # data_arg.add_argument('--data_dir', type=str, default='~/dataset/asap/')
-        # data_arg.add_argument('--data_dir', type=str, default='/data/nlp/jeonso/dataset/asap/')
-        # data_arg.add_argument('--data_dir', type=str, default='/data/nlp/jeonso/dataset/reada/')
-        # data_arg.add_argument('--data_dir', type=str, default='/hits/basement/nlp/jeonso/dataset/reada/')
-        # data_arg.add_argument('--data_dir', type=str, default='/hits/basement/nlp/jeonso/dataset/asap/')
-        # data_arg.add_argument('--data_dir', type=str, default='/hits/basement/nlp/jeonso/dataset/asap-spelled/')
-        data_arg.add_argument('--data_dir', type=str, default='/hits/basement/nlp/jeonso/dataset/toefl/')
-        # data_arg.add_argument('--data_dir', type=str, default='/home/sdeva/workspace/dataset/asap/')
-        # data_arg.add_argument('--data_dir', type=str, default='/hits/basement/nlp/jeonso/dataset/gcdc/')
+        data_arg.add_argument('--data_dir', type=str, default='dataset/toefl/')
         data_arg.add_argument('--data_dir_cv', type=str, default='cv/')
         data_arg.add_argument('--num_cv_set', type=int, default=0)
         data_arg.add_argument('--gen_logs', type=str2bool, default=False)
         data_arg.add_argument('--log_dir', type=str, default='logs')
-        # data_arg.add_argument('--log_dir', type=str, default='/hits/basement/nlp/jeonso/workspace/cohe_2_logs')
         data_arg.add_argument('--session_dir', type=str, default='session')
         data_arg.add_argument('--is_gen_cv', type=str2bool, default='False', help='Decide whether to generate new cv or reuse')  # disabled in this submission for reproduction
         data_arg.add_argument('--cur_fold', type=int, default=-1, help='cur_fold for the cross validation')  # -1 indicates iterating whole folds
@@ -43,31 +34,14 @@ def process_config():
         net_arg = add_argument_group('Network')
         net_arg.add_argument('--embed_size', type=int, default=100)  # for general pretariend, but emb for essay is pre-fixed in the code
 
-        # data_arg.add_argument('--tokenizer_type', type=str, default='word', help="types of tokenizer")  # "word", "bert-base-uncased", or "xlnet-base-cased"
-        # data_arg.add_argument('--tokenizer_type', type=str, default='bert-base-uncased', help="types of tokenizer")  # "nltk" or "bert-base-uncased"
         data_arg.add_argument('--tokenizer_type', type=str, default='xlnet-base-cased', help="types of tokenizer")  # "word", "bert-base-uncased", or "xlnet-base-cased"
-
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='bert-base-uncased')  # path or "bert-base-uncased"
         net_arg.add_argument('--path_pretrained_emb', type=str, default='xlnet-base-cased')  # path or "bert-base-uncased"
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='./En_vectors.txt')  # path or "bert-base-uncased"
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='none')  # path or "bert-base-uncased"
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='/home/jeonso/embeddings/glove.6B.100d.txt')  # path or "bert-base-uncased"
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='/hits/basement/nlp/jeonso/embeddings/glove.6B.100d.txt')  # path or "bert-base-uncased"
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='/hits/basement/nlp/jeonso/embeddings/glove.6B.200d.txt')  # path or "bert-base-uncased"
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='/hits/basement/nlp/jeonso/embeddings/glove.6B.300d.txt')  # path or "bert-base-uncased"
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='/data/nlp/jeonso/embeddings/glove.6B.100d.txt')  # path or "bert-base-uncased"
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='/data/nlp/jeonso/embeddings/glove.6B.300d.txt')  # path or "bert-base-uncased"
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='/hits/basement/nlp/jeonso/embeddings/glove.6B.300d.w2vformat.txt')  # path or "bert-base-uncased"
-        # net_arg.add_argument('--path_pretrained_emb', type=str, default='/home/sdeva/workspace/embeddings/glove.6B.100d.txt')  # path or "bert-base-uncased"
-
         net_arg.add_argument('--pretrained_weights', type=str, default='xlnet-base-cased')  # path for pretrained model
         
-        #net_arg.add_argument('--encoder_type', type=str, default='gru', help='lstm, gru, drnn, bert, reg_lstm')
         net_arg.add_argument('--rnn_cell_type', type=str, default='gru', help='lstm, gru, qrnn')  # might be ignored as encoder_type
         net_arg.add_argument('--rnn_num_layer', type=int, default=1, help='# of layer used in rnn')
         net_arg.add_argument('--rnn_bidir', type=str2bool, default='false', help='lstm, gru, qrnn')  #
         net_arg.add_argument('--encoder_type', type=str, default='xlnet', help='lstm, gru, drnn, bert, reg_lstm, transf, xlnet')
-        # net_arg.add_argument('--encoder_type', type=str, default='gru', help='lstm, gru, drnn, bert, reg_lstm, transf, xlnet')
 
         net_arg.add_argument('--rnn_cell_size', type=int, default=300)  # can be ignored as encoder (e.g., bert)
         # net_arg.add_argument('--rnn_cell_size', type=int, default=100)
@@ -83,8 +57,8 @@ def process_config():
         # train_arg.add_argument('--init_lr', type=float, default=0.0003)  # for xlnet
         train_arg.add_argument('--init_lr', type=float, default=0.003)
         train_arg.add_argument('--momentum', type=float, default=0.0)
-        train_arg.add_argument('--lr_decay', type=float, default=0.0)  # 5e-4?
-        train_arg.add_argument('--warmup_steps', type=int, default=0) # 100?
+        train_arg.add_argument('--lr_decay', type=float, default=0.0)  
+        train_arg.add_argument('--warmup_steps', type=int, default=0) 
         train_arg.add_argument('--dropout', type=float, default=0.1)
         train_arg.add_argument('--improve_threshold', type=float, default=0.996)
         train_arg.add_argument('--patient_increase', type=float, default=4.0)
@@ -106,15 +80,12 @@ def process_config():
         transf_arg.add_argument('-proj_share_weight', action='store_true')
 
         misc_arg = add_argument_group('Misc')
-        #misc_arg.add_argument('--save_model', type=str2bool, default=True)
         misc_arg.add_argument('--save_model', type=str2bool, default=False)
         misc_arg.add_argument('--print_step', type=int, default=15)
         misc_arg.add_argument('--ckpt_step', type=int, default=33)
         misc_arg.add_argument('--batch_size', type=int, default=32)
         misc_arg.add_argument('--use_apex', type=str2bool, default=False)
-        # misc_arg.add_argument('--use_gpu', type=str2bool, default=False)
         misc_arg.add_argument('--use_gpu', type=str2bool, default=True)  # automatically assigned
-        # misc_arg.add_argument('--use_parallel', type=str2bool, default=False)
         misc_arg.add_argument('--use_parallel', type=str2bool, default=True)
         misc_arg.add_argument('--empty_cache', type=str2bool, default=True)
         misc_arg.add_argument('--n_gpu', type=int, default=0)  # automatically assigned
@@ -134,7 +105,6 @@ def process_config():
         specific_arg.add_argument('--sem_dim_size', type=int, default=50)  # dim for semantic vec used in Stru Attention
         specific_arg.add_argument('--pooling_sent', type=str, default="max")  # avg, max
         specific_arg.add_argument('--pooling_doc', type=str, default="max")  # avg, max
-        # specific_arg.add_argument("--local_rank", default=0, type=int)  # for apex
 
         specific_arg.add_argument('--size_avg_pool', type=int, default=10)  # used in SCD
         specific_arg.add_argument('--size_avg_pool_sent', type=int, default=5)  # used in SCD
@@ -158,8 +128,3 @@ def get_config():
         parser.add_argument("--world_size", default=1, type=int)  # 
         config, _ = parser.parse_known_args()
         return config, _
-
-
-# xlnet-asap: 0.0005
-# emnlp18-asap: 0.01
-# gru-asap: 0.001

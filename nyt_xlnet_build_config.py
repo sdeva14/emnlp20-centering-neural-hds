@@ -19,7 +19,6 @@ def process_config():
         data_arg.add_argument('--max_num_sents', type=int, default=-1, help='max length of document, will be defined by dataset')
         data_arg.add_argument('--max_len_sent', type=int, default=-1, help='max length of sentence, will be defined by dataset')
         data_arg.add_argument('--padding_place', type=str, default='post')
-# data_arg.add_argument('--max_vocab_cnt', type=int, default=4000, help="if num of vocab is exceeded, then filter by freq")
         data_arg.add_argument('--max_vocab_cnt', type=int, default=50000, help="if num of vocab is exceeded, then filter by freq")
         data_arg.add_argument('--keep_pronoun', type=str2bool, default=False)
         data_arg.add_argument('--remove_stopwords', type=str2bool, default=False)
@@ -109,7 +108,3 @@ def get_config():
         config, _ = parser.parse_known_args()
         return config, _
 
-
-# xlnet-asap: 0.0005
-# emnlp18-asap: 0.01
-# gru-asap: 0.001
