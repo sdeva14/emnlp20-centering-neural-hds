@@ -46,15 +46,10 @@ Detail information about the configuration can be found in the "build_config.py"
 
 #### The list of models in this framework
 	conll17: The automated essay scoring model in Dong et al. (2017)
-
 	emnlp18: The coherence model in Mesgar and Strube (2018)
-
 	latent_doc_stru: The latent learning model in Liu and Lapata (2018)
-
 	dis_avg: The first baseline which averages representations
-
 	dis_tt: The second baseline which combines the averaged XLNet and the tree transformer
-
 	cent_hds: Our model which approximates Centering theory
 
 #### Pre-defined configuration
