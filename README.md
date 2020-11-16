@@ -1,5 +1,5 @@
 # EMNLP20: Centering-based Neural Coherence Modeling with Hierarchical Discourse Segments
-### [Sungho Jeon](https://sdeva14.github.io/) and Michael Strube
+### [Sungho Jeon](https://sdeva14.github.io/) and [Michael Strube](https://www.h-its.org/people/prof-dr-michael-strube/)
 #### [NLP Lab, Heidelberg Institute for Theoretical Studies (HITS)](https://www.h-its.org/research/nlp/people/)
 
 This project contains a python implementation for the EMNLP20 paper whose title is "Centering-based Neural Coherence Modeling with Hierarchical Discourse Segments".
