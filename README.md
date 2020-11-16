@@ -1,5 +1,5 @@
 # EMNLP20: Centering-based Neural Coherence Modeling with Hierarchical Discourse Segments
-### Sungho Jeon and Michael Strube
+### [Sungho Jeon](https://sdeva14.github.io/) and Michael Strube
 #### [NLP Lab, Heidelberg Institute for Theoretical Studies (HITS)](https://www.h-its.org/research/nlp/people/)
 
 This project contains a python implementation for the EMNLP20 paper whose title is "Centering-based Neural Coherence Modeling with Hierarchical Discourse Segments".
@@ -45,12 +45,17 @@ Detail information about the configuration can be found in the "build_config.py"
     For NYT) python main.py --target_model cent_hds
 
 #### The list of models in this framework
-conll17: The automated essay scoring model in Dong et al. (2017)
-emnlp18: The coherence model in Mesgar and Strube (2018)
-latent_doc_stru: The latent learning model in Liu and Lapata (2018)
-dis_avg: The first baseline which averages representations
-dis_tt: The second baseline which combines the averaged XLNet and the tree transformer
-cent_hds: Our model which approximates Centering theory
+	conll17: The automated essay scoring model in Dong et al. (2017)
+
+	emnlp18: The coherence model in Mesgar and Strube (2018)
+
+	latent_doc_stru: The latent learning model in Liu and Lapata (2018)
+
+	dis_avg: The first baseline which averages representations
+
+	dis_tt: The second baseline which combines the averaged XLNet and the tree transformer
+
+	cent_hds: Our model which approximates Centering theory
 
 #### Pre-defined configuration
 For convenient reproductions, we provide pre-defined configurations, configurations for RNN-based models (e.g., "toefl_build_config.py") and configurations for XLNet-based models (e.g., "toefl_xlnet_build_config.py") for the two datasets.
