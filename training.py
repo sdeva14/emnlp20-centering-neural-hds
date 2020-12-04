@@ -95,7 +95,7 @@ def validate(model, evaluator, dataset_test, config, loss_func, is_test=False):
             evaluator.eval_update(coh_score, label_y, tid, cur_origin_score)
 
             # for the project of centering transformer
-            if config.gen_logs and config.target_model.lower == "cent_attn":
+            if config.gen_logs and config.target_model.lower() == "cent_attn":
                 batch_adj_list = model_outputs[1]
                 batch_root_ds = model_outputs[2]
                 batch_seg_map = model_outputs[3]
