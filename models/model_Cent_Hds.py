@@ -158,8 +158,8 @@ class Coh_Model_Cent_Hds(models.model_base.BaseModel):
     def sent_repr_avg(self, batch_size, encoder_out, len_sents):
         """return sentence representation by averaging of all words."""
 
-        sent_mask = torch.sign(len_sents)  # (batch_size, len_sent)
-        num_sents = sent_mask.sum(dim=1)  # (batch_size)
+        mask_sent = torch.sign(len_sents)  # (batch_size, len_sent)
+        num_sents = mask_sent.sum(dim=1)  # (batch_size)
 
         sent_repr = torch.zeros(batch_size, self.max_num_sents, self.base_encoder.encoder_out_size)
         sent_repr = utils.cast_type(sent_repr, FLOAT, self.use_gpu)
@@ -503,34 +503,33 @@ class Coh_Model_Cent_Hds(models.model_base.BaseModel):
         # mask_input: (batch, max_tokens), len_sents: (batch, max_num_sents)
         batch_size = text_inputs.size(0)
 
-        sent_mask = torch.sign(len_sents)  # (batch_size, len_sent)
-        sent_mask = utils.cast_type(sent_mask, FLOAT, self.use_gpu)
-        num_sents = sent_mask.sum(dim=1)  # (batch_size)
+        mask_sent = torch.sign(len_sents)  # (batch_size, len_sent)
+        mask_sent = utils.cast_type(mask_sent, FLOAT, self.use_gpu)
+        num_sents = mask_sent.sum(dim=1)  # (batch_size)
 
         #### Stage1 and 2: sentence repr and discourse segments parser
         adj_mat, sent_repr, batch_adj_list, batch_root_list, batch_segMap, batch_cp_ind = self.centering_attn(text_inputs, mask_input, len_sents, num_sents, tid)
 
-        encoder_doc_out = self.base_encoder(text_inputs, mask_input, len_seq)
-        encoded_doc = encoder_doc_out[0]
-        if self.output_attentions:
-            attn_doc_avg = encoder_doc_out[1]  # averaged mh attentions (batch, item, item)
-
-        #### doc-level encoding input text (disable the below 4 lines if GPU memory is not enough)
-        sent_mask = torch.sign(len_sents)  # (batch_size, len_sent)
-        sent_mask = utils.cast_type(sent_mask, FLOAT, self.use_gpu)
-        num_sents = sent_mask.sum(dim=1)  # (batch_size)
-        sent_repr = self.sent_repr_avg(batch_size, encoded_doc, len_sents)
+        # #### doc-level encoding input text (disable this part if GPU memory is not enough)
+        # encoder_doc_out = self.base_encoder(text_inputs, mask_input, len_seq)
+        # encoded_doc = encoder_doc_out[0]
+        # if self.output_attentions:
+        #     attn_doc_avg = encoder_doc_out[1]  # averaged mh attentions (batch, item, item)
+        # mask_sent = torch.sign(len_sents)  # (batch_size, len_sent)
+        # mask_sent = utils.cast_type(mask_sent, FLOAT, self.use_gpu)
+        # num_sents = mask_sent.sum(dim=1)  # (batch_size)
+        # sent_repr = self.sent_repr_avg(batch_size, encoded_doc, len_sents)
 
         #### Stage3: Structure-aware transformer
-        mask_sent = torch.arange(self.max_num_sents, device=num_sents.device).expand(len(num_sents), self.max_num_sents) < num_sents.unsqueeze(1)
-        mask_sent = utils.cast_type(mask_sent, BOOL, self.use_gpu)
-        encoded_sents, break_probs = self.tt_encoder(sent_repr, mask_sent, adj_mat)  # ['features'], ['node_order'], ['adjacency_list'], ['edge_order']
+        mask_sent_tr = torch.arange(self.max_num_sents, device=num_sents.device).expand(len(num_sents), self.max_num_sents) < num_sents.unsqueeze(1)
+        mask_sent_tr = utils.cast_type(mask_sent_tr, BOOL, self.use_gpu)
+        encoded_sents, break_probs = self.tt_encoder(sent_repr, mask_sent_tr, adj_mat)  # ['features'], ['node_order'], ['adjacency_list'], ['edge_order']
 
         #### Stage4: Document Attention
         context_weight = self.context_weight.expand(encoded_sents.shape[0], encoded_sents.shape[2], 1)
         attn_weight = torch.bmm(encoded_sents, context_weight).squeeze(2)
         attn_weight = self.tanh(attn_weight)
-        attn_weight = masked_softmax(attn_weight, sent_mask)
+        attn_weight = masked_softmax(attn_weight, mask_sent)
         attn_vec = torch.bmm(encoded_sents.transpose(1, 2), attn_weight.unsqueeze(2))
         ilc_vec = attn_vec.squeeze(2)
 
