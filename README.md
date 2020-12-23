@@ -13,7 +13,7 @@ Our environment file is built based on CUDA9 driver and corresponding libraries,
 
     conda create --name py3_torch_cuda9 --file spec-file.txt
     source activate py3_torch_cuda9
-    pip install pytorch-transformers==2.4.1
+    pip install transformers==2.4.1
     pip install stanza==1.0.1
 
 #### Dataset and materials
