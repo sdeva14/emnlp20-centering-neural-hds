@@ -246,28 +246,20 @@ class Coh_Model_Cent_Hds(models.model_base.BaseModel):
                 # end for
                 attn_diag = torch.stack(list_diag)  # because torch.daig does not support batch
 
+                ## select forward-looking centers by indices
                 temp_fwr_centers, fwr_sort_ind = torch.sort(attn_diag, dim=1, descending=True)  # forward centers are selected by attn
-                temp_fwr_centers = temp_fwr_centers[:, :self.topk_fwr]
-
+                fwr_sort_ind = fwr_sort_ind[:, :self.topk_fwr]
                 batch_cp_ind[:, sent_i] = fwr_sort_ind[:, 0]  # only consider the top-1 item for Cp
 
-                # # non-batched selecting by indices
-                # temp = []
-                # for batch_ind, cur_fwr in enumerate(fwr_centers):
-                #     cur_fwrd_repr = encoded_sent[batch_ind].index_select(0, cur_fwr)
-                #     temp.append(cur_fwrd_repr)
-                # cur_fwrd_repr = torch.stack(temp)
-                # fwrd_repr[:, sent_i] = cur_fwrd_repr
-
-                # batched version selecting by indices
+                # to handle execeptional case when the sent is shorter than topk
                 fwr_centers = torch.zeros(batch_size, self.topk_fwr)
                 fwr_centers = utils.cast_type(fwr_centers, LONG, self.use_gpu)
-                fwr_centers[:, :temp_fwr_centers.size(1)] = temp_fwr_centers  # to handle execeptional case when the sent is shorter than topk
+                fwr_centers[:, :fwr_sort_ind.size(1)] = fwr_sort_ind  
 
-                selected = encoded_sent.gather(1, fwr_centers.unsqueeze(-1).expand(batch_size, self.topk_fwr, self.base_encoder.encoder_out_size))
-                
+                selected = encoded_sent.gather(1, fwr_centers.unsqueeze(-1).expand(batch_size, self.topk_fwr, self.base_encoder.encoder_out_size))                
                 fwrd_repr[:, sent_i, :fwr_centers.size(1)] = selected
 
+                ## make a sentence representation by averaging
                 cur_sent_lens = cur_sent_lens + 1e-9 # prevent zero division
                 cur_avg_repr = torch.div(torch.sum(encoded_sent, dim=1), cur_sent_lens.unsqueeze(1))
                 

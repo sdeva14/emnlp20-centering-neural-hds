@@ -83,7 +83,7 @@ def process_config():
         misc_arg.add_argument('--save_model', type=str2bool, default=False)
         misc_arg.add_argument('--print_step', type=int, default=15)
         misc_arg.add_argument('--ckpt_step', type=int, default=33)
-        misc_arg.add_argument('--batch_size', type=int, default=32)
+        misc_arg.add_argument('--batch_size', type=int, default=16)
         misc_arg.add_argument('--use_apex', type=str2bool, default=False)
         misc_arg.add_argument('--use_gpu', type=str2bool, default=True)  # automatically assigned
         misc_arg.add_argument('--use_parallel', type=str2bool, default=True)
