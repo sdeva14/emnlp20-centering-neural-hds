@@ -239,9 +239,9 @@ class Coh_Model_Cent_Hds(models.model_base.BaseModel):
                     ## masking as the length of each sentence
                     cur_batch_sent_len = int(cur_sent_lens[batch_ind])  # i th sentence with batch
                     if cur_batch_sent_len > 3:
-                        cur_diag[cur_batch_sent_len-3:] = 0  # also remove puntation
+                        cur_diag[cur_batch_sent_len-3:] = -10.0  # also remove puntation
                     else:
-                        cur_diag[cur_batch_sent_len-2:] = 0  # only remove the special tokens
+                        cur_diag[cur_batch_sent_len-2:] = -10.0  # only remove the special tokens
                     list_diag.append(cur_diag)
                 # end for
                 attn_diag = torch.stack(list_diag)  # because torch.daig does not support batch
