@@ -257,7 +257,8 @@ class Coh_Model_Cent_Hds(models.model_base.BaseModel):
                 fwr_centers[:, :fwr_sort_ind.size(1)] = fwr_sort_ind  
 
                 selected = encoded_sent.gather(1, fwr_centers.unsqueeze(-1).expand(batch_size, self.topk_fwr, self.base_encoder.encoder_out_size))                
-                fwrd_repr[:, sent_i, :fwr_centers.size(1)] = selected
+                for cur_fwr in range(self.topk_fwr):
+                    fwrd_repr[:, sent_i, cur_fwr, :] = selected[:, cur_fwr, :]
 
                 ## make a sentence representation by averaging
                 cur_sent_lens = cur_sent_lens + 1e-9 # prevent zero division
