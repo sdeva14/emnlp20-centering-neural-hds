@@ -4,9 +4,9 @@ import numpy as np
 import pandas as pd
 
 def parse_toefl(type):
-	path_index_dir = "/data/nlp/jeonso/dataset/toefl/data/text/"
+	path_index_dir = "dataset/toefl/data/text/"
 	path_dir_text = path_index_dir + "responses/original/"
-	path_output = "/data/nlp/jeonso/dataset/toefl/data/text/"
+	path_output = "dataset/toefl/data/text/"
 	name_output = type + "_toefl_essay.csv"  # training, dev, or test
 
 	path_index_file = os.path.join(path_index_dir, "index-" + type + ".csv")  
