@@ -3,10 +3,10 @@
 #### [NLP Lab, Heidelberg Institute for Theoretical Studies (HITS)](https://www.h-its.org/research/nlp/people/)
 
 This project contains a python implementation for the EMNLP20 paper whose title is "Centering-based Neural Coherence Modeling with Hierarchical Discourse Segments".
-
+<!-- 
 ## Updates (2021.01.09.)
 If you downloaded it before 2021.01.09. please update to a newer version. Previously, the codes used in development were uploaded, and it causes performance degradation. We also add a new option to decide an encoding type of texts, whether encoding a document at once or sentences individually for a structure-aware transformer input. Regarding this, please see our COLING20 paper, "Incremental Neural Lexical Coherence Modeling".
-
+ -->
 ## Requirements
 
 #### Conda environment
